@@ -16,6 +16,7 @@ import {
 import { DeleteOutlined } from "@material-ui/icons";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import { blue, green, pink, yellow } from "@material-ui/core/colors";
 import { formatDistanceToNow } from "date-fns";
 
@@ -47,19 +48,9 @@ const useStyles = makeStyles((theme) => ({
   vertButton: {
     "&:hover": {
       cursor: "pointer",
-      color: "blue",
+      color: "purple",
     },
   },
-  // expand: {
-  //   transform: "rotate(0deg)",
-  //   marginLeft: "auto",
-  //   transition: theme.transitions.create("transform", {
-  //     duration: theme.transitions.duration.shortest,
-  //   }),
-  // },
-  // expandOpen: {
-  //   transform: "rotate(180deg)",
-  // },
   dateTypo: {
     fontSize: "15px",
   },
@@ -70,11 +61,6 @@ const useStyles = makeStyles((theme) => ({
       color: "white",
       border: "solid 1px white",
       borderRadius: "5px",
-    },
-  },
-  expandIcon: {
-    "&:hover": {
-      transform: "rotate(180deg)",
     },
   },
 }));
@@ -105,6 +91,7 @@ const NoteCard = ({ note, handleDelete }) => {
             <Typography gutterBottom className={classes.dateTypo}>
               Create {formatDistanceToNow(new Date(note.noteDate))}
             </Typography>
+
             <Collapse in={expanded} timeout='auto' unmountOnExit>
               <Typography
                 variant='body2'
@@ -116,15 +103,16 @@ const NoteCard = ({ note, handleDelete }) => {
               </Typography>
             </Collapse>
           </CardContent>
+
           <CardActions disableSpacing>
             <Button
               onClick={() => setExpanded(!expanded)}
               variant='outlined'
               className={classes.seeMoreButton}
-              endIcon={<ExpandMoreIcon className={classes.expandIcon} />}
+              endIcon={expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
               size='small'
             >
-              See more...
+              {expanded ? "See less" : "See more"}
             </Button>
 
             <IconButton

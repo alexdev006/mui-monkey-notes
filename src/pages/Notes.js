@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Container, makeStyles } from "@material-ui/core";
+import {
+  Container,
+  makeStyles,
+  InputLabel,
+  Select,
+  MenuItem,
+} from "@material-ui/core";
 import NoteCard from "../components/NoteCard";
 import Masonry from "react-masonry-css";
 
@@ -13,10 +19,15 @@ const useStyles = makeStyles({
     paddingLeft: 30 /* gutter size */,
     backgroundClip: "padding-box",
   },
+  selectCategory: {
+    width: 150,
+    marginBottom: 10,
+  },
 });
 
-const Notes = () => {
+const Notes = ({ note }) => {
   const [notes, setNotes] = useState([]);
+  const [noteByCategory, setNoteByCategory] = useState([]);
   const classes = useStyles();
 
   useEffect(() => {
@@ -32,13 +43,34 @@ const Notes = () => {
     const newNotes = notes.filter((note) => note.id !== id);
     setNotes(newNotes);
   };
+
+  const handleSelect = () => {
+    const filteredNotes = notes.filter(
+      (note) => note.category === notes.category
+    );
+    setNoteByCategory(filteredNotes);
+  };
+
   const breakpoints = {
     default: 3,
     1100: 2,
     700: 1,
   };
+
   return (
     <Container>
+      <InputLabel id='demo-simple-select-label'>Category</InputLabel>
+      <Select
+        className={classes.selectCategory}
+        labelId='demo-simple-select-label'
+        id='demo-simple-select'
+        value={notes.category}
+        // onChange={}
+      >
+        {notes.map((note) => (
+          <MenuItem value={note.category}>{note.category}</MenuItem>
+        ))}
+      </Select>
       <Masonry
         breakpointCols={breakpoints}
         className={classes.masonryGrid}
